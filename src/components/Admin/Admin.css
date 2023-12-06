@@ -7,7 +7,11 @@
 }
 
 .admin-title {
-    margin: 20px 0px;
+    margin: 20px;
+}
+
+.select-page {
+    width: 200px;
 }
 
 .label {

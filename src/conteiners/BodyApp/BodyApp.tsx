@@ -3,18 +3,22 @@ import {useLocation} from "react-router-dom";
 import './BodyApp.css';
 import {IPages} from "../../type";
 import axiosApi from "../../axiosApi";
+import Spinner from "../../components/Spinner/Spinner";
 
 const BodyApp = () => {
     const url = useLocation().pathname;
-
     const [page, setPages] = useState<IPages>();
+    const [loading, setLoading] = useState(true);
 
-    const fetchData = useCallback(async (url:  string) => {
+    const fetchData = useCallback(async (url: string) => {
         try {
+            setLoading(true);
             const pagesResponse = await axiosApi.get<IPages>(`${url}.json`);
             setPages(pagesResponse.data);
+            setLoading(false);
         } catch (error) {
-            console.error('Ошибка при получении данных:', error);
+            console.log('Произошла ошибка при получении данных.', error);
+            setLoading(false);
         }
     }, []);
 
@@ -25,10 +29,12 @@ const BodyApp = () => {
     const renderPage = () => {
         if (page) {
             return (
-                <div>
-                    <h1>{page.title}</h1>
-                    <p>{page.content}</p>
-                </div>
+                loading ? <Spinner/> : (
+                    <div>
+                        <h1>{page.title}</h1>
+                        <p>{page.content}</p>
+                    </div>
+                )
             );
         } else {
             return (
@@ -39,9 +45,10 @@ const BodyApp = () => {
         }
     };
 
+
     return (
         <div className='body-app'>
-            {renderPage()}
+            {loading   ? <Spinner/> : renderPage()}
         </div>
     );
 };
