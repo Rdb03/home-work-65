@@ -43,7 +43,9 @@ const Admin = () => {
     const refactorPage = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
+            setLoading(true);
             await axiosApi.put(`/pages/${selectedPage}.json`, { title, content });
+            setLoading(false);
             alert('Изменение прошло успешно!');
             navigate(`/pages/${selectedPage}`);
         } catch (error) {
