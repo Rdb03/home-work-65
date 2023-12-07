@@ -42,6 +42,12 @@ const Admin = () => {
 
     const refactorPage = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!title.trim() || !content.trim()) {
+            alert('Пожалуйста,  заполните все поля.');
+            return;
+        }
+
         try {
             setLoading(true);
             await axiosApi.put(`/pages/${selectedPage}.json`, { title, content });
